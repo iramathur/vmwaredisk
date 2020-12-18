@@ -15,15 +15,20 @@ data "vsphere_datacenter" "dc" {
   name = "devcloud"
 }
 
+data "vsphere_vmdkpath" "vmdkpath" {
+  name = "${var.volName}"
+  datacenter_id = "${data.vsphere_vmdkpath.vmdkpath.id}"
+}
+
 data "vsphere_datastore" "datastore" {
-  name          = "vmstore"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+  name          = "${var.datastore}"
+  datacenter_id = "${data.vsphere_datacenter.datastore.id}"
 }
 
 resource "vsphere_virtual_disk" "lnDisk" {
   size         = 20
-  vmdk_path    = "latenight_diskir.vmdk"
+  vmdk_path    = "${data.vsphere_vmdkpath.datastore.id}"
   datacenter   = "devcloud"
-  datastore    = "vmstore"
+  datastore    = "${data.vsphere_datastore.datastore.id}"
   type         = "thin"
 }
