@@ -15,13 +15,8 @@ data "vsphere_datacenter" "dc" {
   name = "devcloud"
 }
 
-data "vsphere_Test" "Test" {
-  name = "Test"
-  datacenter_id = "${data.vsphere_Test.Test.id}"
-}
-
 data "vsphere_vmdkpath" "vmdkpath" {
-  name = "${var.volName}"
+  name = "${var.volname}"
   datacenter_id = "${data.vsphere_vmdkpath.vmdkpath.id}"
 }
 
